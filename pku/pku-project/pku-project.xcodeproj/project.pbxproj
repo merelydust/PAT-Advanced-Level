@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF2DF6B52169E03F001493D8 /* foo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF2DF6B32169E03F001493D8 /* foo.cpp */; };
 		BFA9322A2168F5D8006DBB52 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFA932292168F5D8006DBB52 /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BF2DF6B32169E03F001493D8 /* foo.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = foo.cpp; sourceTree = "<group>"; };
 		BFA932262168F5D8006DBB52 /* pku-project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pku-project"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFA932292168F5D8006DBB52 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				BFA932292168F5D8006DBB52 /* main.cpp */,
+				BF2DF6B32169E03F001493D8 /* foo.cpp */,
 			);
 			path = "pku-project";
 			sourceTree = "<group>";
@@ -118,6 +121,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF2DF6B52169E03F001493D8 /* foo.cpp in Sources */,
 				BFA9322A2168F5D8006DBB52 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
