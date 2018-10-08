@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h> // 使用memset memcpy的头函数
 using namespace std;
 
 void binaryAdd(int arr[], int len) {
@@ -15,7 +16,7 @@ int main() {
     int t; cin >> t;
     while (t--) {
         int n; cin >> n;
-        int mincnt = n * n;
+        int mincnt = n * n + 1;
         int wall[n+2][n+2];
         memset(wall, 0, sizeof(wall)); // wall has -1 or 1
         
@@ -30,43 +31,46 @@ int main() {
         memset(brush, 0, sizeof(brush)); // brush has 0 or 1
         brush[0] = -1;
         while(brush[n-1] <= 1) {
+            int tmpwall[n+2][n+2]; // 巨坑啊，忘记清空wall找了两天才找出来的bug
+            memcpy(tmpwall, wall, (n+2)*(n+2)*sizeof(int));
             binaryAdd(brush, n);
             int cnt = 0;
             for (int i = 0; i < n; i++) {
                 if (brush[i] == 1) {
                     cnt++;
-                    wall[1][i+1] *= -1;
-                    wall[0][i+1] *= -1;
-                    wall[2][i+1] *= -1;
-                    wall[1][i] *= -1;
-                    wall[1][i+2] *= -1;
+                    tmpwall[1][i+1] *= -1;
+                    tmpwall[0][i+1] *= -1;
+                    tmpwall[2][i+1] *= -1;
+                    tmpwall[1][i] *= -1;
+                    tmpwall[1][i+2] *= -1;
                 }
-            } // brush first lien
+            } // brush first line
             // brush left lines
             for (int i = 2; i <= n; i++) {
                 for (int j = 1; j <= n; j++) {
-                    if (wall[i-1][j] == -1) {
+                    if (tmpwall[i-1][j] == -1) {
                         cnt++;
-                        wall[i][j] *= -1;
-                        wall[i-1][j] *= -1;
-                        wall[i+1][j] *= -1;
-                        wall[i][j-1] *= -1;
-                        wall[i][j+1] *= -1;
+                        tmpwall[i][j] *= -1;
+                        tmpwall[i-1][j] *= -1;
+                        tmpwall[i+1][j] *= -1;
+                        tmpwall[i][j-1] *= -1;
+                        tmpwall[i][j+1] *= -1;
                     }
                 }
             }
             int last = 0;
             for (int i = 1; i <= n; i++) {
-                last += wall[n][i];
+                last += tmpwall[n][i];
             }
             if (last == n) {
                 if (cnt < mincnt) mincnt = cnt;
-                cout << "min way" << endl;
-                for (int i = 0; i < n; i++) cout << brush[i] << ' ';
-                cout << endl;
             }
         }
-        cout << mincnt << endl;
+        if (mincnt > n*n) {
+            cout << "inf" << endl;
+        } else {
+            cout << mincnt << endl;
+        }
     }
     return 0;
 }

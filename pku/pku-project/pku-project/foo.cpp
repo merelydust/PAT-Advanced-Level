@@ -1,25 +1,26 @@
-#include <iostream>
-#include <list>
-using namespace std;
-
-int main() {
-    int n, m;
-    list <int> monkeys;
-    while (true) {
-        cin >> n >> m;
-        if (!n && !m) break;
-        monkeys.clear();
-        for (int i = 1; i <= n; ++i) monkeys.push_back(i);
-        list<int>::iterator it = monkeys.begin();
-        while (monkeys.size() > 1) {
-            for (int i = 1; i < m; ++i) {
-                ++it;
-                if (it == monkeys.end()) it = monkeys.begin();
-            }
-            it = monkeys.erase(it);
-            if (it == monkeys.end()) it = monkeys.begin();
-        }
-                cout << monkeys.front() << endl;
-    }
-                return 0;
-}
+//#include <iostream>
+//#include <memory.h>
+//using namespace std;
+//
+//void binaryAdd(int arr[], int len) {
+//    arr[0]++;
+//    int i = 0;
+//    while(arr[i] == 2 && arr[len-1] <= 1) {
+//        arr[i+1]++;
+//        arr[i] -= 2;
+//        i++;
+//    }
+//}
+//
+//int main() {
+//    int arr[3];
+//    memset(arr, 0, sizeof(arr));
+//    while (arr[2] <= 1) {
+//        for (int i = 0; i < 3; i++) {
+//            cout << arr[i];
+//        }
+//        cout << endl;
+//        binaryAdd(arr, 3);
+//    }
+//    return 0;
+//}
