@@ -1,39 +1,49 @@
-#include <cstdio>
-int z[10],i[10],sum;
-int main()
-{
-    //只做前三重循环, 后六种根据前面推出
-    // 因为除了1,2,3种操作，只有第四种能影响到A,只有第五种能影响到B
-    // ...只有第六种能影响到I
-    for(int j=1;j<=9;j++)scanf("%d",&z[j]);
-    for(i[1]=0;i[1]<4;i[1]++)
-        for(i[2]=0;i[2]<4;i[2]++)
-            for(i[3]=0;i[3]<4;i[3]++)
-            {
-                i[4]=(4-(z[1]+i[1]+i[2])%4)%4;
-                i[5]=(4-(z[2]+i[1]+i[2]+i[3])%4)%4;
-                i[6]=(4-(z[3]+i[2]+i[3])%4)%4;
-                i[7]=(4-(z[4]+i[1]+i[4]+i[5])%4)%4;
-                i[9]=(4-(z[6]+i[3]+i[5]+i[6])%4)%4;
-                i[8]=(4-(z[8]+i[5]+i[7]+i[9])%4)%4;
-                sum=0;
-                sum+=(z[1]+i[1]+i[2]+i[4])%4;
-                sum+=(z[2]+i[1]+i[2]+i[3]+i[5])%4;
-                sum+=(z[3]+i[2]+i[3]+i[6])%4;
-                sum+=(z[4]+i[1]+i[4]+i[5]+i[7])%4;
-                sum+=(z[5]+i[1]+i[3]+i[5]+i[7]+i[9])%4;
-                sum+=(z[6]+i[3]+i[5]+i[6]+i[9])%4;
-                sum+=(z[7]+i[4]+i[7]+i[8])%4;
-                sum+=(z[8]+i[5]+i[7]+i[8]+i[9])%4;
-                sum+=(z[9]+i[6]+i[8]+i[9])%4;
-                if(sum==0)
-                {
-                    for(int j=1;j<=9;j++)
-                        while(i[j]--) {
-                            printf("%d ",j);
-                        }
-                    return 0;
-                }
-            }
-    return -1;
+#include <iostream>
+#include <map>
+using namespace std;
+
+int main() {
+    map<int, int> poly;
+    map<int, int> m1;
+    map<int, int> m2;
+    int ex, co;
+    int n1, n2;
+    cin >> n1;
+    while (n1--) {
+        scanf("%d %d", &ex, &co);
+        poly[ex] = co;
+    }
+    cin >> n2;
+    while (n2--) {
+        scanf("%d %d", &ex, &co);
+        map<int, int>::iterator it;
+        for (it = poly.begin(); it != poly.end(); it++) {
+            m1[it->first + ex] = it->second + co;
+        }
+        m2[ex] += co;
+    }
+    map<int, int>::iterator it1;
+    int tmpcnt = 0;
+    for (it1 = m1.begin(); it1 != m1.end(); it1++) {
+        if (tmpcnt) cout << ' ';
+        if (it1->second) {
+            cout << it1->first << ' ' << it1->second;
+            tmpcnt++;
+        }
+    }
+    if (!tmpcnt) cout << "0 0";
+    cout << endl;
+    map<int, int>::iterator it2;
+    tmpcnt = 0;
+    for (it2 = m2.begin(); it2 != m2.end(); it2++) {
+        if (tmpcnt) cout << ' ';
+         if (it1->second) {
+             cout << it2->first << ' ' << it2->second;
+             tmpcnt++;
+         }
+        if (!tmpcnt) cout << "0 0";
+        cout << endl;
+    }
+    return 0;
 }
+

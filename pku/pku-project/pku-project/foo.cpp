@@ -13,14 +13,9 @@
 //}
 //
 //int main() {
-//    int arr[3];
-//    memset(arr, 0, sizeof(arr));
-//    while (arr[2] <= 1) {
-//        for (int i = 0; i < 3; i++) {
-//            cout << arr[i];
-//        }
-//        cout << endl;
-//        binaryAdd(arr, 3);
+//    char c;
+//    while (scanf("%c", &c)) {
+//        cout << c << endl;
 //    }
 //    return 0;
 //}
