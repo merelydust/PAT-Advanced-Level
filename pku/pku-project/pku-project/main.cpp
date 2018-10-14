@@ -6,7 +6,6 @@
  ***/
 
 #include <iostream>
-#include <string>
 using namespace std;
 
 struct record {
@@ -55,7 +54,7 @@ void deque(queNode* &front, queNode* &rear) { //出队函数
     }
 }
 
-void buildTree(record* rec, int root, node* &nodep) { //rec查询s是否有孩子 root是根节点序号 nodep是树
+void buildTree(record* rec, int root, node* &nodep) { //rec查询是否有孩子 root是根节点序号 nodep是树
     nodep = new node; // 新建一棵子树
     nodep->num = root; //子树的根在数组里的序号等于root
                        // 递归出口是 子树的根 其实只是个叶子
