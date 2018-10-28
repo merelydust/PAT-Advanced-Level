@@ -4,47 +4,46 @@
 using namespace std;
 
 int main() {
-    char mark1, mark2;
-    string num; int exp;
-    mark1 = getchar();
-    getline(cin, num, 'E');
-    mark2 = getchar();
-    cin >> exp;
+    string strnum, base, strexp; cin >> strnum;
+    int posE = strnum.find('E');
+    strexp = strnum.substr(posE+1, strnum.length()-1-posE);
+    int exp = stoi(strexp);
+    base = strnum.substr(1, posE-1);
+    if (exp == 0) {
+        cout << base << endl; return 0;
+    }
+    if (strnum[0] == '-') cout << '-';
+    base.erase(1,1); // 去除小数点
+    strnum = base;
     
-    if (mark1 == '-') cout << '-'; // 输出负号
-    if (!exp) {
-        cout << num; return 0;
+    if (exp >= 0) {
+        if (exp > base.length() - 1) { // 如果右移到base长度后面 补零
+            for (int i = 0; i < exp-(base.length()-1); ++i) strnum += '0';
+        }
+        else if (exp < base.length() - 1) strnum.insert(1+exp, "."); // 否则 在原小数点位(1)后exp个位置插入小数点
     }
-    int dotpos = 1; // 原来小数点位置为1
-    if (mark2 == '+') {
-        cout << num[0]; // 输出原来小数点前的数
-        dotpos += exp; // 小数点右移后的位置
-        for (int i = 2; i <= dotpos; ++i) cout << num[i];
-        if (dotpos < num.length()-1) { // 如果右移的范围没有超出num的长度
-            cout << '.';
-            for (int j = dotpos+1; j < num.length(); ++j) {
-                cout << num[j];
-            }
+    else {
+        exp = 0 - exp;
+        for (int i = 0; i < exp - 1; ++i) { // 补exp-1个0
+            strnum = "0" + strnum;
         }
-        else if (dotpos > num.length()-1) { // 超出则补零
-            int tmp = dotpos - (num.length()-1);
-            while (tmp--) cout << '0';
-        }
-        // 右移的长度等于num长度时 不输出小数点
+        strnum = "0." + strnum;
     }
-    else if (mark2 == '-') {
-        dotpos -= exp; // 小数点左移
-        // 如果小数点移动了
-        cout << "0.";
-        dotpos++; // 右移n位只需要补n-1个零
-        while (dotpos++ < 1) {
-            cout << '0'; // 补零
-        }
-        cout << num[0]; // 原来的小数点不打印
-        for (int i = 2; i < num.length(); ++i) {
-            cout << num[i];
-        }
-    }
-    cout << endl;
+    // 去除头部多余的0 不除0就会出现00.12这种错误 小数点前最多一个0 非零数字前不能有0
+    // PAT这道题不需要这个操作 因为限定了  [+-][1-9].[0-9]+E[+-][0-9]+
+    //    if (strnum.find('.') != string::npos) {
+    //        int posdot = strnum.find('.')-1;
+    //        for (int i = 0; i < posdot; ++i) {
+    //            if (strnum[i] == '0') strnum.erase(i, 1);
+    //            else break;
+    //        }
+    //    }
+    //    else {
+    //        for (int i = 0; i < strnum.length(); ++i) {
+    //            if (strnum[i] == '0') strnum.erase(i, 1);
+    //            else break;
+    //        }
+    //    }
+    cout << strnum << endl;
     return 0;
 }
