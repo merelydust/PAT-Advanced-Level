@@ -18,3 +18,11 @@
 ### Extra
 - 酌情刷leetcode
 - 每天都要写代码与反思
+
+### 实用资源
+- [数据结构动画演示](https://visualgo.net/en)
+- [酷炫的排序动画](http://sorting.at/)
+
+
+如果对你有所帮助(⁎⁍̴̛ᴗ⁍̴̛⁎)请Star+Follow～
+帮助你、帮助我 成为更加优秀的Programmer(=ﾟωﾟ)ﾉ
