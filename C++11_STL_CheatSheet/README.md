@@ -18,11 +18,11 @@ collected by merelydust for AC٩(˃̶͈̀௰˂̶͈́)و
 
 * 两对迭代器 容器类名::iterator it & 容器类名::reverse_iterator rit
 
-  ![STLimg/iterator.png)
+  ![https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/iterator.png)
 
-* ![ContainerwithIt](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/ContainerwithIt.jpeg)
+* ![ContainerwithIt](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/ContainerwithIt.jpeg)
 
-![ListIt](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/ListIt.jpeg)
+![ListIt](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/ListIt.jpeg)
 
 STL的sort函数需要随机访问迭代器的支持 所以不适用list 只能使用list的成员函数.sort()
 
@@ -53,7 +53,7 @@ STL的sort函数需要随机访问迭代器的支持 所以不适用list 只能�
 
 #include <list>
 
-![ListMFuncs](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/ListMFuncs.jpeg)
+![ListMFuncs](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/ListMFuncs.jpeg)
 
 #### 1.1.3 双向队列 deque
 
@@ -109,7 +109,7 @@ deque也是可变长数组，适用于vector的操作都适用于它。比起vec
 
 #include <map>
 
-It->first 访问关键字 it->second 访问值
+it->first 访问关键字 it->second 访问值
 
 ### 1.3 容器适配器 Container adaptors
 
@@ -145,29 +145,29 @@ It->first 访问关键字 it->second 访问值
 
 ### 2.1 不改变原序列的算法
 
-![NotChangeOrder](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/NotChangeOrder.jpeg)
+![NotChangeOrder](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/NotChangeOrder.jpeg)
 
 ### 2.2 改变元素值的算法
 
-![ChangeVal](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/ChangeVal.jpeg)
+![ChangeVal](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/ChangeVal.jpeg)
 
 ### 2.3 删除元素的算法
 
-![DeleteVal](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/DeleteVal.jpeg)
+![DeleteVal](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/DeleteVal.jpeg)
 
 ### 2.4 改变顺序的算法
 
 #### 2.4.1 变序算法
 
-![changeOrder](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/changeOrder.jpeg)
+![changeOrder](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/changeOrder.jpeg)
 
 #### 2.4.2 排序算法
 
-![Sort](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/Sort.jpeg)
+![Sort](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/Sort.jpeg)
 
 ### 2.5 操作有序区间的算法
 
-![OperateOrdered](/Users/shadow/Desktop/code/C:C++/PAT-Advanced-Level/C++11STL_CheatSheet/STLimg/OperateOrdered.jpeg)
+![OperateOrdered](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/OperateOrdered.jpeg)
 
 ## 3. STL实现树和图
 
