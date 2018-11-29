@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //// 一眼就看出是括号匹配题的变体--变态复杂版= =
 //#include <iostream>
 //#include <cstdio>
@@ -93,6 +94,8 @@
 //    }
 //    return 0;
 //}
+=======
+>>>>>>> 20dc18026255f8a1e0a1537b4c0d9ba95ed0fd56
 #include <iostream>
 #include <cstdio>
 #include <string>
@@ -129,7 +132,11 @@ double calmoney1(string a, string b,int time){
     int hha = stoi(timea.substr(0,2)), hhb = stoi(timeb.substr(0,2));
     int mma = stoi(timea.substr(3,2)), mmb = stoi(timeb.substr(3,2));
     int time1 = time;
+<<<<<<< HEAD
     if (time1 >= 60 ||(time1 < 60 && mma > mmb)) {
+=======
+    if (time1 > 60||(time1 < 60 & &mma > mmb)) {
+>>>>>>> 20dc18026255f8a1e0a1537b4c0d9ba95ed0fd56
         money += rate[hha%24] * (60 - mma);
         money += rate[hhb%24] * mmb;
         hha++;
