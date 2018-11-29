@@ -21,9 +21,10 @@ bign change(char str[]) {
 
 bign add(bign a, bign b) {
     bign ans; int carry = 0;
-    for (int i = 0; i < a.len || i < b.len; ++i) {
-        ans.digit[ans.len++] = (a.digit[i] + b.digit[i] + carry) % 10;
-        carry = (a.digit[i] + b.digit[i]) / 10;
+    for(int i=0;i<a.len||i< b.len;i++){
+        int temp=a.digit[i]+b.digit[i]+carry;
+        ans.digit[ans.len++]=temp%10;
+        carry=temp/10;
     }
     if (carry != 0) ans.digit[ans.len++] = carry;
     return ans;
@@ -35,6 +36,8 @@ void printBigN(bign a) {
 }
 
 bool isPalin(int arr[], int len) {
+    if (arr[len-1]==0) return false;
+    if (arr[0]==0) return false;
     for (int i = 0, half = len/2; i < half; ++i) {
         if (arr[i] != arr[len-1-i]) return false;
     }
