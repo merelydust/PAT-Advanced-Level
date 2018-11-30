@@ -43,7 +43,7 @@ Table of Contents
          * [3.2 图的实现](#32-图的实现)
             * [3.2.1 图的建立](#321-图的建立)
             * [3.2.2 图的遍历](#322-图的遍历)
-      * [3. 参考资料 References](#3-参
+      * [3. 参考资料 References](#3-参考资料)
 
 ## 1.容器 Container
 
@@ -57,7 +57,7 @@ Table of Contents
 
 * 两对迭代器 容器类名::iterator it & 容器类名::reverse_iterator rit
 
-  ![https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/iterator.png]
+  ![iterator](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/iterator.png)
 
 * ![ContainerwithIt](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/ContainerwithIt.jpeg)
 
@@ -422,19 +422,31 @@ void search(node* root, int oldV, int newV) { // 修改指针指向的内容不�
 
 插入位置就是查找失败的位置
 
+```c++
 void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
-
-​	if (root == NULL) {
-
-​		root = createNode(x); return 0; // 新建节点务必让他左右子树为NULL
-
-​	}
-
-​	if (x应该插在左子树) insert(root->left, x); // 往左子树搜索 递归式
-
-​	else insert(root->right, x);
-
+	if (root == NULL) {
+		root = createNode(x); return 0; // 新建节点务必让他左右子树为NULL
+	}
+	if (x应该插在左子树) insert(root->left, x); // 往左子树搜索 递归式
+	else insert(root->right, x);
 }
+```
+
+* AVL的旋转
+
+  ![AVLRotation](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/AVLRotation.png)
+
+  针对树型LL和LR型的旋转
+
+  ![LL](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/LL.png)
+
+  ![LR](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/LR.png)
+
+  总结：
+
+  ![RotationSum](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/RotationSum.png)
+
+  ![AVLInsertCode](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/AVLInsertCode.png)
 
 ### 3.2 图的实现
 
