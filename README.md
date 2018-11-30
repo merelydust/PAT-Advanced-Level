@@ -24,6 +24,7 @@
 ### 实用资源
 - [数据结构动画演示](https://visualgo.net/en)
 - [酷炫的排序动画](http://sorting.at/)
+- [神器：标准模版库STL](https://github.com/merelydust/PAT-Advanced-Level/tree/master/C%2B%2B11_STL_CheatSheet)
 
 
 如果对你有所帮助(⁎⁍̴̛ᴗ⁍̴̛⁎)请Star+Follow～
