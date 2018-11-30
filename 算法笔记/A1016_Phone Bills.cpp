@@ -34,7 +34,7 @@ double calmoney1(string a, string b,int time){
     int hha = stoi(timea.substr(0,2)), hhb = stoi(timeb.substr(0,2));
     int mma = stoi(timea.substr(3,2)), mmb = stoi(timeb.substr(3,2));
     int time1 = time;
-    if (time1 > 60||(time1 < 60 & &mma > mmb)) {
+    if (time1 >= 60 ||(time1 < 60 && mma > mmb)) {
         money += rate[hha%24] * (60 - mma);
         money += rate[hhb%24] * mmb;
         hha++;
