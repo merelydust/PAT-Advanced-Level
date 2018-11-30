@@ -42,8 +42,8 @@ void postOrder(node* root, vector<int>& vi) {
 
 void postOrderMirror(node* root, vector<int>& vi) {
     if (root == NULL) return;
-    postOrder(root->right, vi);
-    postOrder(root->left, vi);
+    postOrderMirror(root->right, vi);
+    postOrderMirror(root->left, vi);
     vi.push_back(root->data);
 }
 
