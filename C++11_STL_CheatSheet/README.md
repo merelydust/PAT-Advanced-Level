@@ -294,6 +294,32 @@ it-&gt;first 访问关键字 it-&gt;second 访问值
 
 ![Sort](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/Sort.jpeg)
 
+* 堆的实现代码
+
+```c++
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    vector<int> nums = {4, 5, 1, 3, 2};
+    // generate heap in the range of numsector
+    make_heap(nums.begin(), nums.end());
+    cout << "initial max value : " << nums.front() << endl;
+    // pop max value
+    pop_heap(nums.begin(), nums.end()); // 把最顶部的元素放到vector最后
+    nums.pop_back(); // 让vector pop掉
+    cout << "after pop, the max vsalue : " << nums.front() << endl;
+    // push a new value
+    nums.push_back(6);
+    push_heap(nums.begin(), nums.end()); 
+    // 当已建堆的容器范围内有新的元素插入末尾后，应当调用push_heap将该元素插入堆中
+
+```
+
+
+
 ### 2.5 操作有序区间的算法
 
 ![OperateOrdered](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/OperateOrdered.jpeg)
@@ -449,25 +475,62 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
 
 * AVL的旋转
 
+  * 左旋右旋
+
+    (从图形上看，左旋就是左边下降，右旋就是右边下降)
+
   ![AVLRotation](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/AVLRotation.png)
 
-  针对树型LL和LR型的旋转
+  **注意 上图中的树是平衡的 只是为了演示左旋右旋*
+
+  * 针对LL型失衡树和LR型失衡树的措施
 
   ![LL](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/LL.png)
 
   ![LR](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/LR.png)
 
-  总结：
+  * 总结：
 
   ![RotationSum](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/RotationSum.png)
 
   ![AVLInsertCode](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/AVLInsertCode.png)
 
+* 哈夫曼树
+
+  叶子节点的带权路径长度(WPL): 叶子节点的权值*其路径长度(从根节点出发到达该节点经过的边数)
+
+  带权路径长度最小的树叫做哈夫曼树，又称最优二叉树。哈夫曼树可以不唯一，但其WPL值唯一。
+
+  用优先队列或堆实现。先将所有元素压入优先队列，每次取出两个最小的，合并，再压回优先队列，直到队列中只剩下一个元素。
+
+  构建思想：反复选择最小的两个元素，合并，直到只剩下一个元素。
+
+  哈夫曼编码：出现频次越小，对应节点权值越小。
+
 ### 3.2 图的实现
 
 #### 3.2.1 图的建立
 
-一般用queue实现
+* 邻接矩阵，二维数组实现，所需空间较大，一般只适用于1000以下的节点。
+
+* 用vector数组Adj[N]实现邻接表，其中N为顶点个数。
+
+  如果是有向图，节点a增加一条到节点b的边，只需要Adj[a].push_back(b);
+
+  如果是无向图，还需要增加一行Adj[b].push_back(a)。
+
+  如果需要同时存放编号和边权值，则建立结构体node
+
+  ```c++
+  struct node {
+      int v; // 节点
+      int w; // 边权
+  }
+  ```
+
+  这样邻接表中的元素就是node类型的。
+
+
 
 #### 3.2.2 图的遍历
 
@@ -527,6 +590,71 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
     ```
 
 - DFS 深度优先 (可以看作树的先根遍历)
+
+  * 遍历模版
+
+    ```c++
+    DFS(u) { // 访问顶点u
+        vis[u] = true; // 设置u已经被访问
+        for (从u出发能直接到达的所有顶点v) 「
+            if (!vis[v]) DFS(v);
+    }
+    
+    DFSTraverse(G) { // 遍历图G
+        for (G的所有顶点u) {
+            if (!vis[u]) DFS(u);
+        }
+    }
+    // 如果给的图是一个连通图，则一次DFS就能完成遍历。
+    ```
+
+    * 邻接矩阵版
+
+    ```c++
+    const int maxn = 1000; int n;
+    bool vis[maxn] = {false};
+    // 二位数组 邻接矩阵 G[maxn][maxn]
+    void DFS(int u, int depth) { // u为当前访问节点 深度为depth
+        vis[u] = true;
+        // 这里操作u
+        // 枚举从u出发能直接到达的分支顶点
+        for (int v = 0; v < n; ++v) {
+            if (!vis[v] && G[u][v]为1/u和v连接了) {
+                DFS(v, depth+1);
+            }
+        }
+    }
+    
+    void DFSTraverse() { // 遍历图
+        for (int u = 0; u < n; ++u) { // 对每个顶点u
+            if (!vis[u]) DFS(u, 1); // 遍历u以及u所在的连通块 1表示第一层
+        }
+    }
+    ```
+
+  * 邻接表版
+
+    ```c++
+    vector<int> Adj;
+    int n;
+    bool vis[maxn] = {false};
+    
+    void DFS(int u, int depth) {
+        vis[u] = true;
+        for (int i = 0; i < adj[u].size(); ++i) {
+            int v = Adj[u][i];
+            if (!vis[v]) DFS(v, depth+1);
+        }
+    }
+    
+    void DFSTraverse() {
+        for (int u = 0; u < n; ++u) {
+            if (!vis[u]) DFS(u, 1);
+        }
+    }
+    ```
+
+  * 题型模版
 
   ```c++
   // 给出一组东西，所求是一个满足某种条件的序列
