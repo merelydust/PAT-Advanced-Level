@@ -1,9 +1,12 @@
 /***
+ 目前所有做错的链表题，都是因为没有更新next的地址QAQ
+ 调整后的链表 node的next就等于它下一个节点的address!
+ 
  建立nodes结构体数组
  开个一万大小的hashtable 访问过的值标记为1
  建两个node型的vector uv v
  遍历有效节点时 遇到访问过的值 push到v 否则push到uv
-  ***/
+ ***/
 #include <cstdio>
 #include <vector>
 #include <algorithm>
@@ -34,12 +37,13 @@ int main() {
     }
     for (int i = 0, len = uv.size(); i < len; ++i) {
         printf("%05d %d ", uv[i].address, uv[i].data);
-        if (uv[i].next == -1) printf("-1\n");
-        else printf("%05d\n", uv[i].next);
+        if (i == len-1) printf("-1\n");
+        else printf("%05d\n", uv[i+1].address);
     }
     for (int i = 0, len = v.size(); i < len; ++i) {
         printf("%05d %d ", v[i].address, v[i].data);
-        if (v[i].next == -1) printf("-1\n");
-        else printf("%05d\n", v[i].next);
+        if (i == len-1) printf("-1\n");
+        else printf("%05d\n", v[i+1].address);
     }
 }
+
