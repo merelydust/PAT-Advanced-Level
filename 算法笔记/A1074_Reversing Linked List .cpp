@@ -22,31 +22,44 @@ int main() {
         nodes[tmp.address] = tmp;
     }
     bool end = false;
+    bool begin = true;
+    int i =0;
     while (!end) {
         stack<node> s; vector<node> v;
         while (s.size() < k) {
-            s.push(nodes[head]); v.push_back(nodes[head]); head = nodes[head].next;
+            s.push(nodes[head]); v.push_back(nodes[head]); 
             if (nodes[head].next == -1) {
-                end = true; break; // 已经是最后一个节点
+            	end = true; break; // 已经是最后一个节点
             }
+			head = nodes[head].next;
         }
         if (s.size() == k) {
             while (!s.empty()) {
-                printf("%05d %d ", s.top().address, s.top().data);
-                if (s.top().next == -1) {
-                    end = true; printf("-1\n");
-                }
-                else printf("%d\n", s.top().next);
+            	node now = s.top();
+            	if(!begin) printf("%05d\n", now.address);
+                printf("%05d %d ", now.address, now.data);
                 s.pop();
+                if(!s.empty()){
+                    node next = s.top();
+            		printf("%05d\n", next.address);
+            		begin = true;
+				}else{
+					if (i+1==n) printf("-1\n");
+					begin = false;
+				}
+				i++;
             }
         }
         else {
-            for (int i = 0, len = v.size(); i < len; ++i) {
-                printf("%05d %d ", v[i].address, v[i].data);
-                if (v[i].next == -1) printf("-1\n");
-                else printf("%05d\n", v[i].next);
+            for (int j = 0, len = v.size(); j < len; ++j) {
+            	if(!begin) printf("%05d\n", v[j].address);
+                printf("%05d %d ", v[j].address, v[j].data);
+                if (v[j].next == -1) printf("-1\n");
+                else printf("%05d\n", v[j+1].address);
+                begin = true;
             }
         }
+        
     }
     return 0;
 }
