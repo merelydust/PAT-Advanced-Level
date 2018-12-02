@@ -11,15 +11,13 @@ using namespace std;
 const int maxn = 10001;
 struct node {
     int address, data, next;
-};
-vector<node> nodes;
+}nodes[100002];
 bool cmp(node a, node b) {
     return a.data < b.data;
 }
 
 int main() {
     int n, head; scanf("%d %d", &n, &head);
-    nodes.resize(200002);
     while(n--) {
     	node tmp;
         scanf("%d %d %d", &tmp.address, &tmp.data, &tmp.next);
@@ -41,7 +39,7 @@ int main() {
     printf("%d %05d\n", validNodes.size(), validNodes[0].address);
     for (int i = 0, len = validNodes.size(); i < len; ++i) {
         printf("%05d %d ", validNodes[i].address, validNodes[i].data);
-        if (validNodes[i].next != -1) printf("%05d\n", validNodes[i].next);
+        if (i!= len-1) printf("%05d\n", validNodes[i+1].address);
         else printf("-1\n");
     }
     return 0;
