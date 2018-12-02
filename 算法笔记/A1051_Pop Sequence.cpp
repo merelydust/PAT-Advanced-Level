@@ -13,7 +13,7 @@ int main() {
     while (k--) {
         for (int i = 0; i < n; ++i) scanf("%d", &arr[i]);
         int now = 0; stack<int> s;
-        for (int i = 1; i <= n && now < n && s.size() <= m; ++i) {
+        for (int i = 1; i <= n && now < n && s.size() < m; ++i) {
             s.push(i);
             while (!s.empty() && s.top() == arr[now] && now < n) {
                 s.pop(); ++now;
