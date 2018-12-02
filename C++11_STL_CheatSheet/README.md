@@ -447,17 +447,21 @@ Void layerOrder(node* root) {
 
 ##### 3.1.3.1 查改
 
+```c++
 void search(node* root, int oldV, int newV) { // 修改指针指向的内容不需要加引用	
 
-​	if (root == NULL) return;
+	if (root == NULL) return;
 
-​	if (root->data == oldV) root->data = newV;
+	if (root->data == oldV) root->data = newV;
 
-​	search(root->left, oldV, newV);
+	search(root->left, oldV, newV);
 
-​	search(root->right, oldV, newV);
+	search(root->right, oldV, newV);
 
 }
+```
+
+
 
 ##### 3.1.3.2 插入增加
 
@@ -530,45 +534,115 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
 
   这样邻接表中的元素就是node类型的。
 
-
-
 #### 3.2.2 图的遍历
 
 - BFS 广度优先 (可以看作树的层序遍历)
 
-  - 模版1：（遍历/标记每一个点 -> 块状广搜标记式）
+  * 遍历模版
 
-  void BFS(x, y, z...) {
+    ```c++
+    BFS(u) { // 遍历u所在连通块
+        queue<type> Q; 
+        Q.push(u); inq[u] = true;
+        while (!Q.empty()) {
+            type fro = Q.front(); Q.pop();
+            for (从u可以直接到达的所有子节点v) 「
+                if (!inq[v]) {
+                    Q.push(v); inq[v] = true;
+                }
+        }
+    }
+    
+    BFSTraverse(G) {
+        for (G的所有顶点u) {
+            if (!inq[u]) BFS(u); // 遍历u所在的连通块
+        }
+    }
+    ```
 
-  ​	queue&lt;type&gt; q; type Node;
+  * 邻接矩阵版
 
-  ​	q.push(startNode); inq标记start已经入队
+    ```c++
+    int n, G[maxn][maxn];
+    bool inq[maxn] = {false};
+    
+    void BFS(int u) { // 以int为例
+        queue<int> Q; 
+        Q.push(u); inq[u] = true;
+        while (!Q.empty()) { // 遍历整个连通块
+            int fro = Q.front; Q.pop();
+            for (int v = 0; v < n; ++v) {
+                if (G[fro][v]isvalid && !inq[v]) {
+                    Q.push(v); inq[v] = true;
+                }
+            }
+        }
+    }
+    
+    void BFSTraverse() {
+        for (int u = 0; u < n; ++u) {
+            if (!inq[u]) BFS(u);
+        } 
+    }
+    ```
 
-  ​	while (!q.empty()) {
+  * 邻接表版
 
-  ​		访问/另存队首元素top;
+    ```c++
+    const int maxn
+    vector<int> Adj[maxn]; // 存放从u出发可以直接到达的v
+    bool inq[maxn] = {false};
+    
+    void BFS(int u) {
+        queue<int> Q;
+        Q.push(u); inq[u] = true;
+        while (!Q.empty()) {
+            int fro = Q.front; Q.pop();
+            for (int i = 0; i < Adj[fro].size(); ++i) {
+                int v = Adj[fro][i];
+                if (!inq[v]) {
+                    Q.push(v); inq[v] = true;
+                }
+            }
+        }
+    }
+    
+    void BFSTraverse() {
+        for (int u = 0; u < n; ++u) { // 枚举所有顶点
+            if (!inq[u]) { // 是一个新的连通块
+                BFS(u);
+            }
+        }
+    }
+    ```
 
-  ​		将队首元素出队pop; // 当一个node被弹出 意味着这一块都要被标记好了
 
-  ​		通过规则（如方向）得到下一个点的坐标x,y,z...
+  - 题型模版1：（遍历/标记每一个点 -> 块状标记式）
 
-  ​		judge函数判断是否是需要访问的点（越界/节点值非所求/节点已经入队了 返回false）
+    ```c++
+    void BFS(坐标/序号...) }{
+        queue<type> Q; 
+        Q.push(startNode); inq[startNode] = true;
+        while (!Q.empty()) {
+            type fro = Q.front();
+            Q.pop(); //当这个node被弹出 意味着它所处的整个连通块都将被标记 while不同于递归实现的DFS
+            通过规则（如枚举方向或子节点）得到下一个点;
+            judge函数判断是否是需要访问的点; // 越界/节点值非所求/节点已经入队了 返回false
+            if (judge(参数)) 将下一个点的入队并标记已经入队inq[node]=true; 
+            // 入队是传入副本 如果要改变对象则选择让对象的编号入队
+            // 如果参数不是type型比如坐标 则建立临时节点tmp 将参数赋予tmp tmp入队
+            // 这一轮会将fro下一层全部入队
+        }
+    }
+    
+    void BFSTraverse() {
+        循环枚举每一个点;
+        if(节点值是所求 && !inq) 传入BFS函数标记所处的整个连通块;
+    }
+    ```
 
-  ​		if true 将坐标值赋给临时Node Node入队(传入副本)
 
-  ​		 （将top的下一层未曾入队的节点全部入队 并标记为已经入队）
-
-  ​	}
-
-  }
-
-  循环枚举每一个点 
-
-  if(节点值是所求 && !inq) 传入BFS函数做标记
-
-
-
-  * 模版2：（找到起点到终点的最短路径 -> 外扩式广搜）
+  * 题型模版2：（找到起点到终点的最短路径 -> 外扩式）
 
     ```c++
     int BFS() { // 返回最小步数 即到终点的层数
@@ -596,7 +670,7 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
     ```c++
     DFS(u) { // 访问顶点u
         vis[u] = true; // 设置u已经被访问
-        for (从u出发能直接到达的所有顶点v) 「
+        for (从u出发能直接到达的所有顶点v) {
             if (!vis[v]) DFS(v);
     }
     
@@ -611,15 +685,18 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
     * 邻接矩阵版
 
     ```c++
-    const int maxn = 1000; int n;
+    const int maxn = 1000; int n; // 实际总节点数n
     bool vis[maxn] = {false};
     // 二位数组 邻接矩阵 G[maxn][maxn]
-    void DFS(int u, int depth) { // u为当前访问节点 深度为depth
+    void DFS(int u, int depth) { // u为当前访问节点 深度为depth 不需要深度不加也行
         vis[u] = true;
-        // 这里操作u
+        // 这里可以操作u
         // 枚举从u出发能直接到达的分支顶点
+        // 如果图中存在环 即两个已经被访问过的v中间还有一条边(u->v1, u->v2, v1-v2)
+        // 为了不重复计算(u->v1 v1->u) 使用完一条边权后就要将其归0 G[u][v] = G[v][u] = 0
+        // 把vis[i]的判断放在累积权值之后 就能包括环的边即已经访问过的两个节点之间的边了
         for (int v = 0; v < n; ++v) {
-            if (!vis[v] && G[u][v]为1/u和v连接了) {
+            if (!vis[v] && G[u][v]为1<=>u和v连接了) { 
                 DFS(v, depth+1);
             }
         }

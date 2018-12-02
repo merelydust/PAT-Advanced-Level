@@ -1,95 +1,69 @@
-//// 一眼就看出是括号匹配题的变体--变态复杂版= =
+///***
+// 区分点权和边权 点权最大的是头 边权达到阈值才是有效帮派
+// 两个人之间的有时长的通话记录就是一条带权值的边 -> 用图模拟
+// 使用DFS枚举每个连通块 点权最高的是头
+// 需要注意 因为dfs遍历是通过枚举节点u的子节点v
+// 如果图中存在环 即两个已经被访问过的v中间还有一条边(u->v1, u->v2, v1-v2)
+// 为了不重复计算(u->v1 v1->u) 使用完一条边权后就要将其归0
+// ***/
 //#include <iostream>
-//#include <cstdio>
-//#include <string>
-//#include <stack>
 //#include <map>
-//#include <vector>
-//#include <algorithm>
+//#include <string>
 //using namespace std;
 //
-//bool cmp(string a, string b) { // 根据通话发生的时间排序
-//    return a.substr(a.find(' ')+1, 11) < b.substr(b.find(' ')+1, 11);
+//const int maxn = 2018; // 最多1000条通话记录 所以最多两千人
+//int n, k, people = 0; // 记录总人数 同时作为姓名对应的序号
+//int G[maxn][maxn] = {0}, weight[maxn] = {0}; // G存储边权， weight存储点权
+//bool vis[maxn] = {false};
+//map<string, int> str2int;
+//map<int, string> int2str;
+//map<string, int> gang; // 头头名字-帮派人数
+//
+//int getID(string s) {
+//    if (str2int.find(s) != str2int.end()) return str2int[s];
+//    else {
+//        str2int[s] = people;
+//        int2str[people] = s;
+//        return people++;
+//    }
 //}
 //
-//int caltime(string a, string b) { // a是开始 b是结束
-//    int minutesa = 0, minutesb = 0;
-//    int dda = stoi(a.substr(3,2)), ddb = stoi(b.substr(3,2)); // 调试后才加的变量...有人电话打了两天多？？太假了吧
-//    if (dda < ddb) minutesb += (ddb - dda) * 24 * 60;
-//    string timea = a.substr(6);
-//    string timeb = b.substr(6);
-//    int hha = stoi(timea.substr(0,2)), hhb = stoi(timeb.substr(0,2));
-//    int mma = stoi(timea.substr(3,2)), mmb = stoi(timeb.substr(3,2));
-//    minutesa += hha * 60 + mma; minutesb += hhb * 60 + mmb;
-//    return minutesb - minutesa;
-//}
-//int rate[24]; int daymoney = 0;
-//double calmoney(string a, string b) {
-//    int money = 0;
-//    string timea = a.substr(6);
-//    string timeb = b.substr(6);
-//    int hha = stoi(timea.substr(0,2)), hhb = stoi(timeb.substr(0,2));
-//    int mma = stoi(timea.substr(3,2)), mmb = stoi(timeb.substr(3,2));
-//    int dda = stoi(a.substr(3,2)), ddb = stoi(b.substr(3,2));
-//    if (dda < ddb) {
-//        money += calmoney(a, a.substr(0,6)+"23:60");
-//        dda++;
-//        while (dda < ddb) {
-//            dda++; money += daymoney;
+//void DFS(int nowVisit, int& head, int& totalValue, int& numMember) { // totalValue大于阈值才是有效帮派
+//    numMember++; // 该连通块内人数++
+//    vis[nowVisit] = true;
+//    if (weight[nowVisit] > weight[head]) head = nowVisit;
+//    for (int i = 0; i < people; ++i) { // 枚举所有人
+//        if (G[nowVisit][i] > 0) { // 如果从nowVisit可以访问到i
+//            totalValue += G[nowVisit][i]; G[nowVisit][i] = G[i][nowVisit] = 0; // 累积边权 用完归零
+//            // 把vis[i]的判断放在累积权值之后 就能包括环的边即已经访问过的两个节点之间的边了
+//            if (!vis[i]) DFS(i, head, totalValue, numMember);
 //        }
-//        hha = 0; mma = 0;
 //    }
-//    if (hha < hhb) money += rate[hha] * (60-mma);
-//    hha++; mma = 0;
-//    while (hha < hhb) {
-//        hha++; money += rate[hha] * 60;
+//}
+//
+//void DFSTraverse() { // 遍历整个图获取全部帮派信息
+//    for (int u = 0; u < people; ++u) { // 枚举每个顶点即每个人
+//        if (!vis[u]) { // 没有被访问过 是个新帮派
+//            int head = u, totalValue = 0, numMember = 0;
+//            DFS(u, head, totalValue, numMember);
+//            if (numMember > 2 && totalValue > k) gang[int2str[head]] = numMember;
+//        }
 //    }
-//    money += rate[hhb] * (mmb - mma);
-//    return double(money);
 //}
 //
 //int main() {
-//    for (int i = 0; i < 24; ++i) {
-//        cin >> rate[i]; daymoney += 60 * rate[i];
-//    }
-//    int n; cin >> n;
-//    getchar(); // 把n后面的换行符吃掉 不然会影响getline
-//    string badrecord[n]; // 先观察样例 通话记录居然是乱序md 不能一边读入一边处理了
-//    for (int i = 0; i < n; ++i) getline(cin, badrecord[i]);
-//    sort(badrecord, badrecord+n, cmp);
-//    map<string, stack<string> > m; // 每个人名对应一个字符串栈 (判断有效记录）
-//    map<string, vector<string> > records; // 每个人名对应一些通话记录（判断后）
+//    cin >> n >> k; string s1, s2; int time;
 //    for (int i = 0; i < n; ++i) {
-//        string name = badrecord[i].substr(0, badrecord[i].find(' ')+1);
-//        string time = badrecord[i].substr(badrecord[i].find(' ')+1, 11);
-//        string status = badrecord[i].substr(badrecord[i].find(' ')+1+12); // time子串后两位开始status子串
-//        if (status == "on-line") {
-//            if (!m[name].empty()) m[name].pop();
-//            m[name].push(time);
-//        }
-//        else if (status == "off-line") {
-//            if (m[name].empty()) continue; // off-line前没有on-line 无效记录
-//            string starttime = m[name].top();
-//            records[name].push_back(starttime);
-//            m[name].pop();
-//            records[name].push_back(time);
-//        }
+//        cin >> s1 >> s2 >> time;
+//        int id1 = getID(s1), id2 = getID(s2);
+//        weight[id1] += time; weight[id2] += time;
+//        G[id1][id2] += time; G[id2][id1] += time; // 一对人可能会打多次电话
 //    }
-//    map<string, vector<string> >::iterator getmonth = records.begin();
-//    string month = getmonth->second[0].substr(0,2);
-//    
-//    map<string, vector<string> >::iterator it = records.begin();
-//    for (; it != records.end(); ++it) {
-//        vector<string>& tmp = it->second; // 太长了 起个别名
-//        cout << it->first << ' ' << month << endl;
-//        double totalmoney = 0.0;
-//        for (int i = 1; i < tmp.size(); i += 2) { // 一条通话一对时间
-//            cout << tmp[i-1].substr(3) << ' ' << tmp[i].substr(3) << ' '; // 原来时间里的月份不打印
-//            double money = calmoney(tmp[i-1], tmp[i]); totalmoney += money;
-//            cout << caltime(tmp[i-1], tmp[i]) << ' ';
-//            printf("$%.2f\n", money / 100);
-//        }
-//        printf("Total amount: $%.2f\n", totalmoney / 100);
+//    DFSTraverse();
+//    cout << gang.size() << endl;
+//    map<string, int>::iterator it = gang.begin();
+//    for (; it != gang.end(); ++it) {
+//        cout << it->first << " " << it->second << endl;
 //    }
 //    return 0;
 //}
