@@ -41,10 +41,10 @@ int main() {
             scanf("%d", &idol); G[idol][usr] = 1;
         }
     }
-    int qNum, q; scanf("%d %d", &qNum, &q);
+    int qNum, q; scanf("%d", &qNum);
     while (qNum--) {
-        scanf("%d", &q); printf("%d\n", q);
-        printf("%d\n", BFS(q));
+        scanf("%d", &q); 
+		printf("%d\n", BFS(q));  
     }
     return 0;
 }
