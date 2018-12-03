@@ -13,7 +13,8 @@ int findFather(int x) { // 查找x所在集合的根节点
     while (father[x] != x) x = father[x];
     // 路径压缩
     while (father[a] != a) {
-        father[a] = x;
+        int b = a;
+        father[b] = x; // 不能一步到位把father[a]改成x 不然还怎么用father[a]更新a= =
         a = father[a];
     }
     return x;

@@ -18,7 +18,7 @@ int findFather(int x) {
     int a = x;
     while (father[x] != x) x = father[x];
     while (father[a] != a) { // 路径压缩
-        father[a] = x;
+        int b = a; father[b] = x; // 不能一步到位把father[a]改成x 不然还怎么用father[a]更新a=
         a = father[a];
     }
     return x;
