@@ -294,7 +294,9 @@ it-&gt;first 访问关键字 it-&gt;second 访问值
 
 ![Sort](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/Sort.jpeg)
 
-* 堆的实现代码
+* 堆的STL实现代码
+
+  **堆是一棵完全二叉树*
 
 ```c++
 #include <iostream>
@@ -310,14 +312,88 @@ int main() {
     // pop max value
     pop_heap(nums.begin(), nums.end()); // 把最顶部的元素放到vector最后
     nums.pop_back(); // 让vector pop掉
-    cout << "after pop, the max vsalue : " << nums.front() << endl;
+    cout << "after pop, the max value : " << nums.front() << endl;
     // push a new value
     nums.push_back(6);
     push_heap(nums.begin(), nums.end()); 
     // 当已建堆的容器范围内有新的元素插入末尾后，应当调用push_heap将该元素插入堆中
-
+}
 ```
 
+
+
+* 手写堆
+
+  ```c++
+  const int maxn = 100;
+  int heap[maxn], n = 10; // heap为堆 n为元素个数
+  
+  // 堆调整的是非叶子节点 将节点v与它的左右孩子（如果有的话）比较，如果有孩子权值大于v，则与v交换位置。交换完毕后继续让v和新孩子比较，直到节点v的孩子都比v小/不存在
+  // 每次调整都是把节点从上往下挪 -> 向下调整
+  // 将heap数组在[low, high]范围内向下调整，low是欲调节的数组下标，high是堆的最后一个元素的数组下标
+  void downAdjust(int low, int high) {
+      int i = low, j = i * 2; // i为欲调整节点j是两个孩子中较大那个的下标 初始为左孩子下标
+      while (j <= high) { // 存在孩子节点
+          // 如果存在右孩子 且右孩子比左孩子大
+          if (j+1 <= high && heap[j+1] > heap[j]) {
+              j = j + 1; // 让j存储右孩子下标
+          }
+          if (heap[j] > heap[i]) {
+          swap(heap[j], heap[i]);
+          i = j; // 保持i为欲调整节点
+          j = i * 2; // j是i的左孩子
+      } 
+          else break; // 孩子权值都比欲调整节点i小
+      }
+  }
+  
+  // 建堆
+  // 序列元素个数为n 完全二叉树叶子节点个数位n/2，所以数组下标[1, n/2]范围内都是非叶子节点。于是可以从n/2号位开始倒着枚举节点，对每个遍历到的i都进行向下调整。
+  // 为啥要倒着枚举？因为每次调整完一个节点，这个节点的根就会变成它所在子树的最大值。倒着枚举在树的视角来看就是从级别低的root向终极root走，最终可以保证每个节点都是以其为根节点的子树中值最大的节点。
+  void createHeap() {
+      for (int i = n / 2; i >= 1; --i) {
+          downAdjust(i, n); // 共有n个元素
+      }
+  }
+  
+  // 删除堆中最大元素也就是堆顶元素 保持堆结构
+  void deleteTop() {
+      heap[1] = heap[n--]; // 用最后一个元素覆盖堆顶元素 然后让元素个素减一
+      downAdjust(1, n); // 向下调整堆顶元素
+  }
+  
+  // 添加元素
+  // 将元素放在数组最后 进行向上调整操作
+  // 把欲比较节点与父节点做比较 如果权值比父节点大 就交换其与父节点 反复比较 知道到达堆顶或父节点较大
+  // heap数组在[low, high]范围内向上调整
+  // high是欲调整节点下标，low设为堆顶下标1
+  void upAdjust(int low, int high) {
+      int i = high, j = i / 2; // i为欲调整节点 j为其父亲
+      while (j >= low) { // 父亲在[low, high]范围内
+          if (heap[j] < heap[i]) {
+              swap(heap[j], heap[i]);
+              i = j; j = i / 2;
+          }
+          else break;
+      }
+  }
+  // 开始添加元素
+  void insert(int x) {
+      heap[++n] = x;
+      upAdjust(1, n);
+  }
+  
+  // 堆排序
+  // 建堆后 将堆的最后一个元素替换到堆顶 进行向下调整(最大的就到最后了)
+  // 如此重复 直到堆中只有一个元素(上一步实际上是在不断删除堆顶)
+  // 具体实现时 为了节省空间可以倒着遍历数组 假设当前访问到i号位置 那么将堆顶元素和i号元素交换 接着在[1, i-1]范围内对堆顶元素进行向下调整
+  void heapSort() {
+      for (int i = n; i > 1; --i) {
+          swap(heap[i], heap[1]);
+          downAdjust(heap[1]);
+      }
+  }
+  ```
 
 
 ### 2.5 操作有序区间的算法
@@ -752,8 +828,91 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
   }
   ```
 
+* 最短路径算法
 
+  * Dijkstra算法
 
+    Dijsstra解决的是单源最短路问题，即给定起点s，求s到其他顶点的最短距路。
+
+    **策略**
+
+    设置集合S存放已被访问的点，然后执行n次下面的步骤:
+
+    1. 从未访问的点中选择与起点s距离最短的点u，访问并加入集合S
+    2. 让u作为中节点，优化起点s与所有能从u到达的顶点v的最短距离。
+
+    **具体实现**
+
+    ```c++
+    // 伪代码
+    // G为图 一般设置为全局变量 数组d为起点到各点最短路径长度 s为起点
+    void Dijkstra(G, d[], s) {
+        初始化;
+        for (循环n次) {
+            u = 使d[u]最小切还未被访问的顶点编号;
+            标记u已经被访问;
+            for (从u出发能到达的所有顶点v) 「
+                if (v未被访问&&以u为中介点能使s到v的最短距离d[v]更优) {
+                    优化d[v];
+                }
+        }
+    }
+    ```
+
+    写出具体函数前 先定义maxm为最大顶点数和INF
+
+    ```c++
+    const int maxn = 1000;
+    const int INF = 10 << 9;
+    ```
+
+    **邻接矩阵版**
+
+    适用于点数不大(一两千)的情况
+
+    ```c++
+    void Dijkstra(int s) { // s为起点
+        fill(d, d + maxn, INF); // fill函数将整个d数组赋值为INF 这里不能用memset
+        d[s] = 0; // 到自身的距离为0
+        for (int i = 0 ; i < n; ++i) {
+            int u = -1, MIN = INF; // u使d[u]最小 MIN存放该最小的d[u]
+            for (int j = 0; j < n; ++j) { // 找到未访问的节点中d[]最小的
+                if (!vis[j] && d[j] < MIN) {
+                    u = j; MIN = d[u];
+                }
+            }
+            if (u == -1) return; // 找不到说明剩下的节点和s连通不了
+            vis[u] = true;
+            for (int v = 0; v < n; ++v) {
+                if (!vis[v] && G[u][v] != INF && d[u]+G[u][v] < d[v]) { // v未被访问&&u能到达v&&以u为中节点可以使d[v]更优
+                    d[v] = d[u] + G[u][v];
+                }
+            }
+        }
+    }
+    ```
+
+    **邻接表版**
+
+    只有更新最短距离的for循环跟邻接矩阵不一样
+
+    ```c++
+    struct node {
+        int v, dis; // v为边的目标顶点 dis为边权
+    };
+    vector<node> Adj[mqxn];
+    
+    for (int j = 0; j < Adj[u].size(); ++j) {
+        int v = Adj[u][j].v; // 通过邻接表直接获得u能到达的顶点v
+        if (!vis[v] && d[u]+Adj[u].dis < d[v]) {
+            d[v] = d[u]+Adj[u].dis;
+        }
+    }
+    ```
+
+    用pre保存所有能使v产生最短路径的前驱节点
+
+    ![Dijkstra](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/Dijkstra.png)
 
 
 ## 3. 参考资料 References
