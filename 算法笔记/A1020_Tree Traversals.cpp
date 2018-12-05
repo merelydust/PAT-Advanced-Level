@@ -20,7 +20,7 @@ node* createTree(int postL, int postR, int inL, int inR) {
     for (k = inL; k <= inR; ++k) {
         if (in[k] == root->data) break;
     }
-    int numLeft = k - inL; // 右子树的节点个数
+    int numLeft = k - inL; // 左子树的节点个数
     // 左子树的后序序列区间为[postL, postL+numLeft-1] 中序序列区间为[inL, k-1]
     root->left = createTree(postL, postL+numLeft-1, inL, k-1);
     // 右子树的后序序列区间为[postL+numLeft, postR-1] 中序序列区间为[k+1, inR];

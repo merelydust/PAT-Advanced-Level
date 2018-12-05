@@ -30,6 +30,9 @@ unsigned long long findLeft(string num) {
 
 unsigned long long search() { // 二分查找是否存在一个radix使条件成立
     unsigned long long left = findLeft(n2), right = max(left, lln1)+1, mid;
+    // 上界是下界与另外一个进制中的较大值
+    // 因为可操作的数字 如果在另一个数字的进制下还是小于另一个数字 在另一个数字的进制加一下还是他自己 不可能比另一个数字大了
+    // 1000进制的10还是10 不是1001
     if (lln1 == MAX_NUM) return 0;
     while (left <= right) { // 查询元素必须存在 所以使用<=
         mid = (left + right) / 2; lln2 = transfer(n2, mid);
