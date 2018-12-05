@@ -5,8 +5,9 @@ struct node {
     char element;
     int left, right;
 }tree1[10], tree2[10]; // 用静态链表存储树
+int check[10] = {0}; // 标记是否为子节点
 
-int buildTree(node* tree) { // 返回根节点在静态链表中的索引
+int buildTree() { // 返回根节点在静态链表中的索引
     int num; cin >> num;
     if (!num) return -1;
     int check[10] = {0};
@@ -22,7 +23,7 @@ int buildTree(node* tree) { // 返回根节点在静态链表中的索引
             check[tree[i].right] = 1;
         } else tree[i].right = -1;
     }
-    for (int i = 0; i < num; ++i) {
+    for (int i = 0; i < num; ++i) { // 找到根节点返回
         if (!check[i]) return i;
     }
     return -1;
