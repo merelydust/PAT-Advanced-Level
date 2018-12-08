@@ -942,11 +942,11 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
     struct node {
         int v, dis; // v为边的目标顶点 dis为边权
     };
-    vector<node> Adj[mqxn];
+    vector<node> Adj[maxn];
     
     for (int j = 0; j < Adj[u].size(); ++j) {
         int v = Adj[u][j].v; // 通过邻接表直接获得u能到达的顶点v
-        if (!vis[v] && d[u]+Adj[u].dis < d[v]) {
+        if (!vis[v] && d[u]+Adj[u][j].dis < d[v]) {
             d[v] = d[u]+Adj[u].dis;
         }
     }
