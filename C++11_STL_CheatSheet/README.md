@@ -282,6 +282,42 @@ it-&gt;first 访问关键字 it-&gt;second 访问值
 
 ![DeleteVal](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/DeleteVal.jpeg)
 
+* unique函数
+
+  unique是 c++标准模板库STL中十分实用的函数之一，使用此函数需要
+
+  ```
+  #include <algorithm>
+  ```
+
+  该函数的作用是“去除”容器或者数组中相邻元素的重复出现的元素，注意 
+  (1) 这里的去除并非真正意义的erase，而是将重复的元素放到容器的末尾，返回值是去重之后的尾地址。 
+  (2) unique针对的是相邻元素，所以对于顺序顺序错乱的数组成员，或者容器成员，需要先进行排序，可以调用std::sort()函数
+
+  ```c++
+  #include <iostream>
+  #include <algorithm>
+  
+  int main(void)
+  {
+      int a[8] = {2, 2, 2, 4, 4, 6, 7, 8};
+      int c;
+  
+      //std::sort(a, a + 8);  //对于无序的数组需要先排序
+  
+      c = (std::unique(a, a + 8) - a );
+  
+      std::cout<< "c = " << c << std::endl;
+  
+      //打印去重后的数组成员
+      for (int i = 0; i < c; i++)
+          std::cout<< "a = [" << i << "] = " << a[i] << std::endl;
+  
+      return 0;
+  }
+  ```
+
+
 ### 2.4 改变顺序的算法
 
 #### 2.4.1 变序算法
@@ -400,13 +436,17 @@ int main() {
 
 ![OperateOrdered](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/OperateOrdered.jpeg)
 
-对于集合A，B（可以使用数组、list、vector、set）
+```c++
+// 对于集合A、B（可以是数组、list、vector、set）
+merge(); //归并两个序列，元素总个数不变，只是将两个有序序列归并为一个有序序列。
+//将集合A，B的并集保存到tosave中
+set_union(a.begin(), a.end(), b.begin(), b.end(), inserter(tosave, tosave.begin())); 
+set_difference(); //实现求集合A，B的差（即A—B）
+set_symmetric_difference(); //实现求集合A，B的对称差（即(A-B)并(B-A))
+set_intersection(); //实现求集合A，B交集
+```
 
-merge() //归并两个序列，元素总个数不变，只是将两个有序序列归并为一个有序序列。
-set_union(a.begin(), a.end(), b.begin(), b.end(), inserter(tosave, tosave.begin())) //将集合A，B的并保存到tosave中
-set_difference()//实现求集合A，B的差（即A—B）
-set_symmetric_difference()//实现求集合A，B的对称差（即(A-B)并(B-A))
-set_intersection()//实现求集合A，B交集
+
 
 ## 3. 树和图的实现
 
@@ -428,11 +468,13 @@ Node* create(int data[], int n) {
 
 * 完全二叉树中的任何一个编号为x（从1开始）的节点x, 其左孩子编号为2x，右孩子编号为2x+1
 
-  所以可以通过一个大小为2^k的数组存储 k为完全二叉树的最大高度。
+  所以可以通过一个大小为2^k的数组存储（k是完全二叉树的最大高度）。
 
   要明确一点，**指针**是地址，用数组模拟指针的时候，**数组的索引**就是地址。
 
   指针去动态分配的空间寻找存储的数据，数组索引存储数据的位置就在结构体数组里。
+
+  * 二叉树的静态实现（用结构体数组/静态链表代替链表）
 
   ```c++
   struct node {
@@ -446,9 +488,7 @@ Node* create(int data[], int n) {
 
 * 判断某个节点是否为叶节点为：该节点（记下标为root）的左子节点的编号root*2大于节点总个数
 
-  判断某个节点是否为空节点：该节点下表root大于总及节点个数n
-
-* 二叉树的静态实现（用结构体数组/静态链表代替链表）
+  判断某个节点是否为空节点：该节点下标root大于总及节点个数n
 
 * 对于一般的树，指针域存放所有**直系**子节点的地址/下标，用数组模拟树
 
@@ -466,30 +506,27 @@ DFS：先序遍历 中序遍历 后序遍历（这个名字是针对root被访�
 
 BFS：层序遍历
 
-Void layerOrder(node* root) {
-
-​	queue<node*> Q; // 使用node\*才能对原node做更改
-
-​	Q.push(root);
-
-​	while(!Q.empty()) {
-
-​		node* fro = Q.front(); // 另存队首元素
-
-​		Q.pop(); // 弹出队首元素
-
-​		printf("%d ", fro->data); // 访问队首元素
-
-​		if (fro->left != NULL) Q.push(fro->left); // 左子树非空
-
-​		if (fro->right != NULL) Q.push(fro->right); // 右子树非空
-
-​	}
-
+```c++
+void layerOrder(node* root) {
+    queue<node*> Q;
+    Q.push(root);
+    while (!Q.empty()) {
+        node* fro = Q.front(); // 另存队首元素
+        Q.pop(); // 弹出队首元素
+        printf("%d ", fro->data); // 访问队首元素
+		if (fro->left != NULL) Q.push(fro->left); // 左子树非空
+		if (fro->right != NULL) Q.push(fro->right); // 右子树非空
+    }
 }
+```
+
+
 
 * 当题目要求取得节点的层次，就需要在node结构体中增加layer成员。根节点的layer为0或1。之后每个节点入队前都把他的节点记为当前节点fro的layer+1。
-* 给定序列填充到二叉查找树里，因为中序遍历树是从小到大的顺序，所以先把序列从小到大排序，在中序遍历树，把序列里的值填充进去即可。
+
+* 如何把给定序列填充到二叉查找树里？
+
+  因为中序遍历树是从小到大的顺序，所以先把序列从小到大排序，再中序遍历树，过程中把序列里的值填进去即可。
 
 **应用例题**
 
@@ -513,7 +550,7 @@ Void layerOrder(node* root) {
       // 左子树先序区间为[preL+1, preL+numLeft] 中序区间为[inL, k-1]
       root->left = createTree(preL+1, preL+numLeft, intL, k-1);
       // 右子树先序区间为[preL+numLeft+1, preR] 中序区间为[k+1, inR]
-      root->right = create(preL+1+numLeft, preR, k+1, inR);
+      root->right = createTree(preL+1+numLeft, preR, k+1, inR);
       return root;
   }
   ```
@@ -610,6 +647,8 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
 
   这样邻接表中的元素就是node类型的。
 
+  * 注意区分点权和边权。
+
 #### 3.2.2 图的遍历
 
 - BFS 广度优先 (可以看作树的层序遍历)
@@ -648,7 +687,7 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
         while (!Q.empty()) { // 遍历整个连通块
             int fro = Q.front; Q.pop();
             for (int v = 0; v < n; ++v) {
-                if (G[fro][v]isvalid && !inq[v]) {
+                if (G[fro][v] && !inq[v]) {
                     Q.push(v); inq[v] = true;
                 }
             }
@@ -701,13 +740,13 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
         Q.push(startNode); inq[startNode] = true;
         while (!Q.empty()) {
             type fro = Q.front();
-            Q.pop(); //当这个node被弹出 意味着它所处的整个连通块都将被标记 while不同于递归实现的DFS
+            Q.pop(); //当这个node被弹出 意味着它所处的整个连通块都将被标记
             通过规则（如枚举方向或子节点）得到下一个点;
             judge函数判断是否是需要访问的点; // 越界/节点值非所求/节点已经入队了 返回false
-            if (judge(参数)) 将下一个点的入队并标记已经入队inq[node]=true; 
+            if (judge) 将这个点入队并标记已经入队inq[node]=true; 
             // 入队是传入副本 如果要改变对象则选择让对象的编号入队
             // 如果参数不是type型比如坐标 则建立临时节点tmp 将参数赋予tmp tmp入队
-            // 这一轮会将fro下一层全部入队
+            // 这一轮会将fro直系连接的下一层全部入队
         }
     }
     
@@ -729,7 +768,7 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
             if (fro.x == T.x && fro.y == T.y) return fro.step; // 已经到达终点
             for (int i = 0; i < 4; ++i) {
                 int newX = fro.x + X[i]; int newY = fro.y + Y[i];
-                if (test(newX, newY)) {
+                if (judge(newX, newY)) {
                     Node.x = newX; Node.y = newY; Node.step = fro.step+1;
                     q.push(Node); inq[newX][newY] = true;
                 }
@@ -766,13 +805,13 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
     // 二位数组 邻接矩阵 G[maxn][maxn]
     void DFS(int u, int depth) { // u为当前访问节点 深度为depth 不需要深度不加也行
         vis[u] = true;
-        // 这里可以操作u
+        // 这里可以操作u / max(maxDepth, depth)取得最大深度
         // 枚举从u出发能直接到达的分支顶点
         // 如果图中存在环 即两个已经被访问过的v中间还有一条边(u->v1, u->v2, v1-v2)
         // 为了不重复计算(u->v1 v1->u) 使用完一条边权后就要将其归0 G[u][v] = G[v][u] = 0
-        // 把vis[i]的判断放在累积权值之后 就能包括环的边即已经访问过的两个节点之间的边了
+        // 把vis[i]的判断放在累积边权之后 就能包括环的边即已经访问过的两个节点之间的边了
         for (int v = 0; v < n; ++v) {
-            if (!vis[v] && G[u][v]为1<=>u和v连接了) { 
+            if (!vis[v] && G[u][v]<=>u和v连接了) { 
                 DFS(v, depth+1);
             }
         }
@@ -812,7 +851,7 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
   ```c++
   // 给出一组东西，所求是一个满足某种条件的序列
   // 建两个vector 分别存储临时序列tmp和最优序列ans;
-  // 如果对序列元素有要求的话 函数参数还需要nowSelect 记录选了几个了
+  // 如果对序列元素个数有要求的话 函数参数还需要nowSelect 记录选了几个了
   void DFS(int index, int nowSelect...) { // 变量index指向当前被处理的对象
       if (当前状态已符合条件/到达递归出口) 临时解更新最优解/进行某种计算;
       else {
@@ -820,9 +859,11 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
           tmp.push_back(当前这个东西); DFS(index, nowSelect+1...); // 选了第index个东西的分支
           tmp.pop_back(); // 选的分支结束后把刚加进去的东西pop掉
           DFS(index+1, nowK...); // 不选的分支 如果东西的索引是逆序的 就是index-1 具体情况具体分析
+          // 如果是完全背包问题 index可以不变
       }
   }
-   // 分支数量是给定的 DFS枚举递归写更简洁 如一般的树 枚举节点的孩子集合 
+  
+  // 总结： 分支数量是给定的 DFS枚举递归写更简洁 如一般的树 枚举节点的孩子集合
   for(int i=0; i<node.children.size(); ++i) {
       DFS(node.children[index][i]...)
   }
@@ -849,17 +890,17 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
     void Dijkstra(G, d[], s) {
         初始化;
         for (循环n次) {
-            u = 使d[u]最小切还未被访问的顶点编号;
+            u = 使d[u]最小且还未被访问的顶点编号;
             标记u已经被访问;
-            for (从u出发能到达的所有顶点v) 「
-                if (v未被访问&&以u为中介点能使s到v的最短距离d[v]更优) {
+            for (从u出发能到达的所有顶点v) {
+                if (v未被访问 && 以u为中介点能使s到v的最短距离d[v]更优) {
                     优化d[v];
                 }
         }
     }
     ```
 
-    写出具体函数前 先定义maxm为最大顶点数和INF
+    写出具体函数前 先定义maxn为最大顶点数和 INF表示不连通
 
     ```c++
     const int maxn = 1000;
@@ -884,7 +925,8 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
             if (u == -1) return; // 找不到说明剩下的节点和s连通不了
             vis[u] = true;
             for (int v = 0; v < n; ++v) {
-                if (!vis[v] && G[u][v] != INF && d[u]+G[u][v] < d[v]) { // v未被访问&&u能到达v&&以u为中节点可以使d[v]更优
+                // v未被访问 && u能到达v && 以u为中节点可以使d[v]更优
+                if (!vis[v] && G[u][v] != INF && d[u]+G[u][v] < d[v]) { 
                     d[v] = d[u] + G[u][v];
                 }
             }
