@@ -1,3 +1,8 @@
+/***
+ 思路:数组a里有个num1 数组2里有个num2 num1+num2=sum 那么这种组合的个数就是a里num1的个数*b里num2的个数
+ 数组.at[value] Returns the element at position n in the array.
+ ***/
+
 #include <iostream>
 #include <vector>
 using namespace std;

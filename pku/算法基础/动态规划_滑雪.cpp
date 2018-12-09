@@ -1,47 +1,51 @@
 #include <iostream>
-
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
 using namespace std;
-
-int data[102][102], longest[102][102];
-int m,n;
-
-int cal(int i, int j)
+const int maxn=100+5;
+int a[maxn][maxn];
+int dp[maxn][maxn];
+int n,m;
+int dir[4][2]={1,0,0,1,-1,0,0,-1};
+int DP(int x,int y)
 {
-    int max = 0;//保存周围节点的最大长度，最优子问题的变形;
-    if (longest[i][j] > 0)
-        return longest[i][j];
-    if ( i-1>=0 && data[i][j]>data[i-1][j] && max<cal(i-1,j))
-        max = cal(i-1,j);
-    if ( j-1>=0 && data[i][j]>data[i][j-1] && max<cal(i,j-1))
-        max = cal(i,j-1);
-    if( i+1<m && data[i][j]>data[i+1][j] && max<cal(i+1,j))
-        max = cal(i+1,j);
-    if( j+1<n && data[i][j]>data[i][j+1] && max<cal(i,j+1))
-        max = cal(i,j+1);
-    return longest[i][j] = max+1;
     
+    if(dp[x][y])
+        return dp[x][y];
+    int ans=0;
+    for(int i=0;i<4;i++)
+    {
+        int xx=x+dir[i][0];
+        int yy=y+dir[i][1];
+        if(xx<0||xx>=n||yy<0||yy>=m)
+            continue;
+        if(a[xx][yy]<a[x][y])
+            ans=max(ans,DP(xx,yy));
+    }
+    dp[x][y]=ans+1;
+    return dp[x][y];
 }
-
-
-
 int main()
 {
-    int i,j;
-    int maxway = 0;
-    
-    cin>>m>>n;
-    for (i=0; i<m; i++)
-        for (j=0; j<n; j++)
+    while(cin>>n>>m)
+    {
+        for(int i=0;i<n;i++)
         {
-            cin>>data[i][j];
-            longest[i][j] = 0;
+            for(int j=0;j<m;j++)
+                cin>>a[i][j];
         }
-    for(i=0; i<m; i++)
-        for (j=0; j<n; j++)
+        memset(dp,0,sizeof(dp));
+        int maxx=0;
+        for(int i=0;i<n;i++)
         {
-            longest[i][j] = cal(i,j);
-            if(maxway<longest[i][j])
-                maxway = longest[i][j];
+            for(int j=0;j<m;j++)
+            {
+                maxx=max(maxx,DP(i,j));
+            }
         }
-    cout<<maxway<<endl;
+        cout<<maxx<<endl;
+    }
+    return 0;
 }
+

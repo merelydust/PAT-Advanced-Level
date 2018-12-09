@@ -1,40 +1,34 @@
 #include <cstdio>
-#include <queue>
-#include <algorithm>
+#include <map>
+#include <set>
 using namespace std;
 
-const int maxn = 10010;
-struct node {
-    int hh, mm, ss;
-    int ptime, wtime;
-    node() {
-        wtime = 0;
-    }
-}nodes[maxn];
-
-bool cmp(node a, node b) {
-    if (a.hh != b.hh) return a.hh < b.hh;
-    else if (a.mm < b.mm) return a.mm < b.mm;
-    else return a.ss < b.ss;
-}
-
+const int maxn = 100000;
+int hashtable[maxn] = {0}, couple[maxn] = {0};
+int arr[maxn];
 
 int main() {
-    int n, k; scanf("%d %d", &n, &k);
-    node tmp;
-    for (int i = 0; i < n; ++i) {
-        scanf("%d:%d:%d %d", &tmp.hh, &tmp.mm, &tmp.ss, &tmp.ptime);
-        if (tmp.hh >= 17) continue;
-        else if (tmp.hh < 8) {
-            
-        }
-        nodes[i] = tmp;
+    int n; scanf("%d", &n);
+    map<int, int> mp; set<int> st;
+    int a, b;
+    while (n--) {
+        scanf("%d %d", &a, &b);
+        mp[a] = b; mp[b] = a;
+        couple[a] = 1; couple[b] = 1;
     }
-    sort(nodes, nodes+n, cmp);
-    queue<node> Q;
-    for (int i = 0; i < 3; ++i) Q.push(nodes[i]); // 刚开门最前面三个人一起去
-    int ocp = 3; // 当前被占用窗口数
-    while (!Q.empty()) {
-        
+    int m; scanf("%d", &m);
+    for (int i = 0; i < m; ++i) {
+        scanf("%d", &arr[i]); hashtable[arr[i]] = 1;
     }
+    for (int i = 0; i < m; ++i) {
+        if (!couple[arr[i]]) st.insert(arr[i]); // 没对象
+        else if (!hashtable[mp[arr[i]]]) st.insert(arr[i]); // 对象没来
+    }
+    printf("%d\n", st.size());
+    if (!st.size()) return 0;
+    for (auto it = st.begin(); it != st.end(); ++it) {
+        if (it == st.begin()) printf("%05d", *it);
+        else printf(" %05d", *it);
+    }
+    printf("\n"); return 0;
 }

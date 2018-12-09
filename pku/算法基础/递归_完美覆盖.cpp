@@ -6,7 +6,7 @@
  f(4)=3*f(2)+2,
  f(6)=3*f(4)+2*f(2)+2,
  f(n)=3*f(n-2)+2*(f(n-4)+f(n-6)+….+f(2))+2 = f(n-2)+2*(f(n-2)+f(n-4)+….+f(2))+2;
- source: https://blog.csdn.net/NNNNNNNNNNNNY/article/details/51596216
+ 题目设定f(0)=1 可以推出 f(n) = 4 * f(n-2) - f(n-4)
 ***/
 #include <iostream>
 using namespace std;
