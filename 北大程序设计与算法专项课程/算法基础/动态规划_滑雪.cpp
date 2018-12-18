@@ -1,51 +1,34 @@
-#include <iostream>
 #include <cstdio>
-#include <cstring>
 #include <algorithm>
 using namespace std;
-const int maxn=100+5;
-int a[maxn][maxn];
-int dp[maxn][maxn];
-int n,m;
-int dir[4][2]={1,0,0,1,-1,0,0,-1};
-int DP(int x,int y)
-{
-    
-    if(dp[x][y])
-        return dp[x][y];
-    int ans=0;
-    for(int i=0;i<4;i++)
-    {
-        int xx=x+dir[i][0];
-        int yy=y+dir[i][1];
-        if(xx<0||xx>=n||yy<0||yy>=m)
-            continue;
-        if(a[xx][yy]<a[x][y])
-            ans=max(ans,DP(xx,yy));
+
+const int maxn = 110;
+int row, col, maxL = -1;
+int arr[maxn][maxn] = {0};
+int dp[maxn][maxn] = {0};
+int X[4] = {0, 0, 1, -1};
+int Y[4] = {1, -1, 0, 0};
+
+int cal(int x, int y) {
+    if (dp[x][y]) return dp[x][y];
+    int preL = 0; // 该点向四周能滑的最长长度
+    for (int i = 0; i < 4; ++i) {
+        int newX = x + X[i], newY = y + Y[i];
+        if (newX < 0 || newX >= row || newY < 0 || newY >= col) continue;
+        if (arr[newX][newY] < arr[x][y]) preL = max(preL, cal(newX, newY));
     }
-    dp[x][y]=ans+1;
+    dp[x][y] = preL + 1; // 该点能滑的最长长度=四周能滑的最长长度+1
     return dp[x][y];
 }
-int main()
-{
-    while(cin>>n>>m)
-    {
-        for(int i=0;i<n;i++)
-        {
-            for(int j=0;j<m;j++)
-                cin>>a[i][j];
-        }
-        memset(dp,0,sizeof(dp));
-        int maxx=0;
-        for(int i=0;i<n;i++)
-        {
-            for(int j=0;j<m;j++)
-            {
-                maxx=max(maxx,DP(i,j));
-            }
-        }
-        cout<<maxx<<endl;
+
+int main() {
+    scanf("%d %d", &row, &col);
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) scanf("%d", &arr[i][j]);
     }
+    for (int i = 0; i < row; ++i) {
+        for (int j = 0; j < col; ++j) maxL = max(cal(i, j), maxL);
+    }
+    printf("%d\n", maxL);
     return 0;
 }
-
