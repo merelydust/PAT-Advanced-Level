@@ -1,6 +1,6 @@
 # C++11 STL Cheat Sheet
 
-collected by merelydust for AC٩(˃̶͈̀௰˂̶͈́)و
+collected by github@merelydust for AC٩(˃̶͈̀௰˂̶͈́)و
 
 Table of Contents
 =================
