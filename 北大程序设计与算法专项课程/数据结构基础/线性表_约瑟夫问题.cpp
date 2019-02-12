@@ -9,7 +9,7 @@ int main() {
     for (int i = 1; i <= n; ++i) lst.push_back(i);
     list<int>::iterator it = lst.begin();
     while (lst.size() > 1) {
-        for (int i = 1; i < m; ++i) {
+        for (int i = 0; i < m; ++i) {
             if (++it == lst.end()) it = lst.begin();
         }
         it = lst.erase(it);
