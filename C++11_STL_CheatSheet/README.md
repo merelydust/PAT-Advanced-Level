@@ -80,15 +80,15 @@ STL的sort函数需要随机访问迭代器的支持 所以不适用list 只能�
 
 * vector&lt;type&gt; v;
 
-* v.insert(iterator, val); v.erase(iterator start, iterator end)   v.clear()
+* v.insert(iterator, val); 
+
+* v.erase(iterator start, iterator end)   // 如果只有一个参数 只删除该迭代器指向的参数
 
   remove函数返回值是空，erase返回指向下一个元素的迭代器
 
-  //如果只有一个参数 只删除该迭代器指向的参数 区别于string
-
-* v.swap(vector&lt;type&gt; &v2) v内容与另一个同类型的v2互换
-
-* vector1 == vector2 表明两个序列完全相同（数字和顺序）
+* v.clear()
+* v.swap(vector&lt;type&gt; &v2) // v内容与另一个同类型的v2互换
+* vector1 == vector2 // 表明两个序列完全相同（数字和顺序）
 
 #### 1.1.2 双向链表 list
 
@@ -108,17 +108,25 @@ deque也是可变长数组，适用于vector的操作都适用于它。比起vec
 
 * 赋值可以接收char数组
 
-* .substr(startPos, len) 如果省略len参数或者len&gt;原字符串长度 则子串取到原串末尾
+* .substr(startPos, len) // 如果省略len参数或者len&gt;原字符串长度 则子串取到原串末尾
 
-* s1.swap(s2) 交换两个字符串内容
+* s1.swap(s2) // 交换两个字符串内容
 
-* s1.find_first_of(s2) 寻找s1中第一次出现s2中任一字符的位置 s1.find_first_not_of(s2) 寻找第一个s2没有的字符
+* s1.find(pos, s2) // 从pos位开始寻找
 
-  .find_last_of .find_last_not_of 从后往前找
+* s1.find_first_of(s2) // 寻找s1中第一次出现s2中任一字符的位置 s1.find_first_not_of(s2) 寻找第一个s2没有的字符
 
-* s1.replace(pos, len, str2) 把s1从pos开始 长度为len的子串 替换成s2
+  .find_last_of .find_last_not_of // 从后往前找
 
-* .erase(pos, len) .insert(pos, len)
+* s1.replace(pos, len, str2) // 把s1从pos开始 长度为len的子串 替换成s2
+
+  s1.replace(it1, it2, str2)
+
+* 删除单个字符 .erase(it)
+
+  删除字符区间 .erase(it1, it2) 或 .erase(pos, len)
+
+* 插入字符 .insert(pos, string) 或 .insert(it1, it2, it3)
 
 ### 1.2 关联容器 Associative Containers
 
@@ -128,17 +136,13 @@ deque也是可变长数组，适用于vector的操作都适用于它。比起vec
 
 * .find(val)
 
-* .lower_bound(val)  // 返回最大位置it [begin, it)中所有元素都比val小 (返回第一个>=val的位置)
+* .lower_bound(val) 
 
-  // 找到的是另一个区间的下限 所以[begin, it)这个区间的元素都小于val
+* .upper_bound(val) 
 
-  // 为了这个区间尽可能长 返回最大的it upper_bound以此类推
+* 如果没有找到val元素 则返回val应该在的位置 
 
-  .upper_bound(val) // 返回最小位置it [it, end)中所有元素都比val大 (返回第一个>val的位置)
-
-  // 如果没有找到val元素 则返回val应该在的位置 
-
-  // 如果想要下标而不是地址 令返回值减去数组首地址即可
+  如果想要下标而不是地址 令返回值减去数组首地址即可
 
 * .count(val) // how many elements.value == val
 
@@ -148,7 +152,7 @@ deque也是可变长数组，适用于vector的操作都适用于它。比起vec
 
 #include &lt;set&gt;
 
-.insert(val) 返回bool true插入成功 false val已经在集合中
+.insert(val) // return 插入成功 ? true : false
 
 #### 1.2.2 映射 map
 
