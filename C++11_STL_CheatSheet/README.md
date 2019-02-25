@@ -418,7 +418,7 @@ int main() {
   void heapSort() {
       for (int i = n; i > 1; --i) {
           swap(heap[i], heap[1]);
-          downAdjust(heap[1]);
+          downAdjust(1, i-1); // i即序列长度 不断变短直到为1
       }
   }
   ```
