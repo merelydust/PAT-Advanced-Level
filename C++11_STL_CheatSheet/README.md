@@ -258,6 +258,7 @@ it-&gt;first 访问关键字 it-&gt;second 访问值
 ![NotChangeOrder](https://github.com/merelydust/PAT-Advanced-Level/blob/master/C%2B%2B11_STL_CheatSheet/STLimg/NotChangeOrder.jpeg)
 
 * max(a, max(b,c)); // 三个元素最大值
+* find(it1, it2, value)返回迭代器
 
 ### 2.2 改变元素值的算法
 
@@ -648,7 +649,11 @@ void insert(node*& root, int x) { // 注意使用引用 否则插入不会成功
 
 * 邻接矩阵，二维数组实现，所需空间较大，一般只适用于1000以下的节点。
 
+  **适用需要快速判断端点间是否有关系/或取得某些值的问题，不需要遍历所有邻接点。**
+
 * 用vector数组Adj[N]实现邻接表，其中N为顶点个数。
+
+  **适用需要快速取得邻接点的问题，不需要遍历整张图。**
 
   如果是有向图，节点a增加一条到节点b的边，只需要Adj[a].push_back(b);
 
